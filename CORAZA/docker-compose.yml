@@ -1,0 +1,14 @@
+services:
+  coraza:
+    image: ghcr.io/coreruleset/coraza-crs:nginx
+    container_name: coraza-waf
+    restart: unless-stopped
+    environment:
+      - BACKEND=172.17.0.1:80 # IP docker bridge → NPM port 80
+      - PORT=8090
+      - CORAZA_RULE_ENGINE=DetectionOnly # mulai DetectionOnly dulu!
+      - TZ=Asia/Jakarta # Menyetel zona waktu container ke Jakarta
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./custom-rules/custom.conf:/opt/coraza/rules.d/custom.conf:ro
